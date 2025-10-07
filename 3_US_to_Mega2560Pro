@@ -23,12 +23,12 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 SensorData sensors[NUM_SENSORS];
 
 void setup() {
-  Serial.begin(115200);  // Serial0 for debugging
-  
-  // Initialize hardware UARTs (Serial1, Serial2, Serial3)
-  Serial1.begin(115200);
-  Serial2.begin(115200);
-  Serial3.begin(115200);
+  Serial.begin(115200);  // Serial0 for debugging via USB
+
+  // Initialize hardware UARTs with correct pin references
+  Serial1.begin(115200); // TX1 (Pin 18), RX1 (Pin 19)
+  Serial2.begin(115200); // TX2 (Pin 16), RX2 (Pin 17)
+  Serial3.begin(115200); // TX3 (Pin 14), RX3 (Pin 15)
 
   // Initialize OLED display
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
