@@ -66,36 +66,28 @@ H_DATA	0X07	Higher 8 bits of distance data	1 byte
 L_DATA	0XA1	Lower 8 bits of distance data	1 byte
 SUM	0XA7	data checksum	1 byte
 SUM= (header+Data_H+ Data_L)&0x00FF
-
 =(0XFF + 0X07 + 0XA1)&0x00FF
-
 =0XA7；
-
 Distance value = DATA_ H * 256+DATA_L = 0x07A1;
-
 Decimal conversion is equal to 1953;
-
 Let’s first start with the most basic program. It’s purpose is to measure the distance and send the value to the Serial Monitor.
+
+
 
 #include <SoftwareSerial.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
- 
 unsigned char buffer_RTT[4] = {0};
 uint8_t CS;
 #define COM 0x55
 int Distance = -1, lastStableDistance = -1;
 unsigned long stableStartTime = 0;
- 
 SoftwareSerial mySerial(2, 3);
- 
 // For the SSD1306 OLED display Module
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
- 
 #define OLED_RESET -1
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
- 
 void setup() {
   Serial.begin(115200);
   mySerial.begin(115200);
@@ -123,11 +115,9 @@ void loop() {
         buffer_RTT[i] = mySerial.read();
       }
       CS = buffer_RTT[0] + buffer_RTT[1] + buffer_RTT[2];
- 
-      if (buffer_RTT[3] == CS) {
+       if (buffer_RTT[3] == CS) {
         int newDistance = (buffer_RTT[1] << 8) + buffer_RTT[2];
- 
-        if (Distance == -1) {  
+         if (Distance == -1) {  
           // First valid reading, set immediately
           Distance = newDistance;
           lastStableDistance = newDistance;
@@ -144,15 +134,13 @@ void loop() {
           Distance = newDistance;
           stableStartTime = millis();
         }
- 
-        Serial.print("Current Distance: ");
+         Serial.print("Current Distance: ");
         Serial.print(Distance);
         Serial.println("mm");
       }
     }
   }
 }
- 
 void updateDisplay(int value) {
   display.clearDisplay();
   display.setCursor(10, 10);
